@@ -18,13 +18,16 @@ CMD [ "node", "index.js" ]
 
 ```
 docker build .
-docker images ls
+docker image ls
 docker image rm 5d1184c03742
 docker build -t first-app . // create image
 docker run -d --name myContainerForFirstApp first-app // first one is container name
 docker rm myContainerForFirstApp -f // remove container (using force to kill running container)
 docker run -p 4000:3000 -d --name myContainerForFirstApp first-app // 1st port is from browser, 2nd port is from container
 docker exec -it myContainerForFirstApp bash // go to file system of container -> can typing `ls` to see and `exit` to exit
+docker volume
+docker volume prune // removed unrunning
+docker rm myContainerForFirstApp -fv // remove container including volume
 ```
 
 * I tried to change package.json , here is the result -> will not display cache in step 3/7 (!only for docker build)
@@ -63,6 +66,23 @@ Step 3/7 : COPY package.json .
   -> make readonly bind mount by using `:ro` concat after -v
   `docker run -p 4000:3000 -d -v 'D:\2. Code\1.learn code\6.devops nodejs\first-docker-project\':/app:ro -v /app/node_modules --name myContainerForFirstApp first-app`
 
+* ENVIROMENT
+  * need to set ENV and EXPOSE in Dockerfile and command with -p and --env PORT to pass port number in
+    `docker run -p 4000:4000 -d -v 'D:\2. Code\1.learn code\6.devops nodejs\first-docker-project\':/app:ro -v /app/node_modules --env PORT=4000 --name myContainerForFirstApp first-app`
+  * if want to pass more env, use more --env each -> but the best case is using the file to save env `--env-file ./.env`
+    `docker run -p 4000:4000 -d -v 'D:\2. Code\1.learn code\6.devops nodejs\first-docker-project\':/app:ro -v /app/node_modules --env-file ./.env --name myContainerForFirstApp first-app`
+
+* delete volume
+  each time when we use `-v`, will create volume, even when we remove it, it's still preserved
+
+* [pr] there are so many container in full app, problem is needed to run so many commands
+  -> [sol] using docker-compose.yml
+
+* Docker compose
+  `docker-compose up -d`
+  -> after this we have `docker image ls` = first-docker-project_node-app
+  -> `docker ps` = first-docker-project_node-app_1
 
 [COMMANDS]
 touch myfile // use in linux
+printenv // print environment
