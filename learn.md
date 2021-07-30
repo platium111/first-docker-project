@@ -79,9 +79,18 @@ Step 3/7 : COPY package.json .
   -> [sol] using docker-compose.yml
 
 * Docker compose
-  `docker-compose up -d`
-  -> after this we have `docker image ls` = first-docker-project_node-app
-  -> `docker ps` = first-docker-project_node-app_1
+  * `docker-compose up -d`
+    -> after this we have `docker image ls` = first-docker-project_node-app
+    -> `docker ps` = first-docker-project_node-app_1
+  * `docker-compose down -v` can remove container and volume
+    * when run `up` again, it's very fast because it's based on docker image already there
+      * but it's not smart if we change something else -> need to run `build` again `docker-compose up -d --build` to force build
+
+* Change package.json or Dockerfile not automatic build in both docker-compose and docker build -> need to run `compose --build` or `docker build` again
+
+
+[pr] bind mount is not good in production because we don't want it or using different port, not use nodemon ...
+  [sol] separate Dockerfile in dev and prod env
 
 [COMMANDS]
 touch myfile // use in linux
