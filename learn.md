@@ -90,8 +90,18 @@ Step 3/7 : COPY package.json .
 
 
 [pr] bind mount is not good in production because we don't want it or using different port, not use nodemon ...
-  [sol] separate Dockerfile in dev and prod env
+  [sol] separate Dockerfile in dev and prod env and common Docker such as `docker-compose.yml`, `docker-compose.dev.yml`, `docker-compose.prod.yml`
+  * run 3 files
+    dev `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
+    prod `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+      -> in prod it's not bulding again -> everytime code change need to pass `--build` in there
+        `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build`
+  * down container
+    `docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v` 
+  * remember need to add 3 files in .dockerignore
 
+[pr] nodemon is still installed in production mode
+  [sol] in Dockerfile change `RUN npm install --only=production` and has `IF` in Dockerfile
 [COMMANDS]
 touch myfile // use in linux
 printenv // print environment

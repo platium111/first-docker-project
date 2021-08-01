@@ -3,11 +3,6 @@ services:
   node-app:
     build: .
     ports:
-      - "4000:4000"
-    volumes:
-      - ./:/app
-      - /app/node_modules
+      - "4000:3000"
     environment:
-      - PORT=4000
-    # env_file:
-    #  - ./.env
+      - PORT=3000
