@@ -102,6 +102,42 @@ Step 3/7 : COPY package.json .
 
 [pr] nodemon is still installed in production mode
   [sol] in Dockerfile change `RUN npm install --only=production` and has `IF` in Dockerfile
+  * `RUN if [ "$NODE_ENV" = "development" ];` spacing is matter in the end of []
+
+
+PART 2: MONGO
+* Add mongo, use `image:mongo`  instead of `build`, then passing environment....
+* `docker exec -it first-docker-project_mongo_1 bash` -> `mongo -u "hieptq" -p "mypassword"`
+  * quick way `docker exec -it first-docker-project_mongo_1 mongo -u "hieptq" -p "mypassword"` 
+* need to insert into db, then `show dbs` can work
+
+* [pb] if we remove container, then start again, `mydb` will be gone
+  * [sol] using `volumes` by declare inside `volumes` in the same level as `services` and map to volumes inside mongo
+
+* notes: when we using `down`, we should not use `-v` in this case because it'll remove the volume we have for mongo
+* `docker inspect first-docker-project_node-app_1` -> to see network and other info
+  * `first-docker-project_default` is the default network
+
+* Network
+  * container only talks to other containers in the same network, can't talk to other network
+  * [pr] Normally, need to have specfic IP to point to mongoGB, but can have DNS for network which is easy to connect containers
+    * [sol] `mongoose.connect("mongodb://hieptq:mypassword@mongo/?authSource=admin")` // using mongo instead of IP
+    * can check by go to bash of nodejs, then `ping mongo`
+    * this is not working with default bridge network, but can work with your default bridge network
+  * `docker network inspect first-docker-project_default` -> inpect your default network bridge
+    * we can see all info of network for nodejs and mongo container
+
 [COMMANDS]
-touch myfile // use in linux
-printenv // print environment
+* normal file system
+  touch myfile // use in linux
+  printenv // print environment
+  ls -l // sort file by alphabet
+* mongo
+  db
+  use mydb // swtich to mydb
+  show dbs // show all db
+  db.books.insert({"name": "game of thrones"})
+  db.books.find()
+[REFERENCE]
+* bash 
+  https://tldp.org/LDP/Bash-Beginners-Guide/html/index.html
