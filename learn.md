@@ -55,7 +55,7 @@ Step 3/7 : COPY package.json .
   -> use npm i --save-dev, it will not install in production (example use for nodemon)
 
 * to see docker log (what print out when run `npm run dev`)
-  `docker logs myContainerForFirstApp`
+  `docker logs myContainerForFirstApp -f`
 
 * [pr] if we remove `node_modules`, cannot run localhost:40000
   -> because we syn our local files to container by using `-v` (called bind mount) -> we should prevent (can't delete) it by using another volume
@@ -127,6 +127,11 @@ PART 2: MONGO
   * `docker network inspect first-docker-project_default` -> inpect your default network bridge
     * we can see all info of network for nodejs and mongo container
 
+* `depends_on` start services inside depends on first before start itself
+  * still need Nodejs code handles this error, example: retry connection for mongo. Don't rely on orchestration
+
+* `--no-deps` only run specific service without care about `depends_on`. Normally, if we just specify service after .yml, we can start only that service.
+  * `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps mongo`
 [COMMANDS]
 * normal file system
   touch myfile // use in linux
