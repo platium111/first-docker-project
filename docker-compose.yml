@@ -8,10 +8,16 @@ services:
       - PORT=3000
     depends_on:
       - mongo
+
   mongo:
     image: mongo
     volumes:
       - mongo-db:/data/db
+
+  redis:
+    image: redis
+    ports:
+      - 6397
 
 volumes:
   mongo-db:

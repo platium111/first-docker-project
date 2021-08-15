@@ -133,6 +133,10 @@ PART 2: MONGO
 * `--no-deps` only run specific service without care about `depends_on`. Normally, if we just specify service after .yml, we can start only that service.
   * `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps mongo`
 [COMMANDS]
+
+
+PART 3 : Route in Nodejs
+using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
 * normal file system
   touch myfile // use in linux
   printenv // print environment
@@ -143,6 +147,23 @@ PART 2: MONGO
   show dbs // show all db
   db.books.insert({"name": "game of thrones"})
   db.books.find()
+
+* redis
+  * Aadd new redis image into .yml -> just need to use `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d` instead of using `down` and `up` again because docker-compose is smart enough. However, if we add new libs by using `npm install` we need to `down and up `again
+
+  * [pr] when we install redis and express-session, we need to `down and up or using up only`, it will refer to old anonymous volume which doesn't have data for redis and express-session -> so need to force it to use the new one by `-V` in docker command
+
+* [pr] Connection ECONNREFUSED 127.0.0.1:6379 when running node
+  * [sol] problem could be not connected to the right `redis-server` -> need to have url inside redis client when we use `createClient`
+    ```javascript
+      let redisClient = redis.createClient({
+      host: REDIS_URL,
+      port: REDIS_PORT,
+      url: "redis://redis:6379", // refer to Redis server
+      });
+    ```
+
+
 [REFERENCE]
 * bash 
   https://tldp.org/LDP/Bash-Beginners-Guide/html/index.html
