@@ -9,6 +9,7 @@ exports.signUp = async (req, res) => {
       username,
       password: hashpassword,
     });
+    req.session.user = newUSer;
     res.status(201).json({
       status: "success",
       data: {
@@ -39,6 +40,7 @@ exports.login = async (req, res) => {
 
     const isCorrect = await bcrypt.compare(password, user.password);
     if (isCorrect) {
+      req.session.user = user; // need to set session here to check after in create post. If expired, then protect
       res.status(200).json({
         status: "success",
       });

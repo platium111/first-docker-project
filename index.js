@@ -46,14 +46,15 @@ connectWithRetry();
 
 app.use(
   session({
+    name: "session_name",
     store: new RedisStore({ client: redisClient }),
     secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
     cookie: {
-      secure: false,
-      resave: false,
-      saveUninitialized: false,
-      httpOnly: true,
       maxAge: 30000,
+      httpOnly: false,
+      secure: false,
     },
   })
 );

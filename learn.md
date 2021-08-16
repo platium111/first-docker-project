@@ -163,6 +163,16 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
       });
     ```
 
+* Cookie
+  * we save cookie inside session stored in our database, `docker exec -it first-docker-project_redis_1 bash` -> `redis-cli` to see cli to manage database
+  * `KEYS *` used to show all keys
+  * `GET "sess:8jpbom-OjyWPgDYRPjvi3E79J--uB86c"` to get details 
+
+* Session
+  * when we login -> need to have cookies info into session by app.use(session(...)). Each user will have separated session. After that, when we create a post, we need middleware to check if it has `user` inside `req.session`, if not we stop it, otherwise we go to the next().
+
+  * session has config for expired time, so when time up, session is removed from Redis
+
 
 [REFERENCE]
 * bash 
