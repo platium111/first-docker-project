@@ -60,7 +60,7 @@ app.use(
 );
 // Route
 app.use(express.json()); // if don't have, we can use post method because body is not parsing
-app.get("/", (req, res) => {
+app.get("/api/v1", (req, res) => {
   res.send("<h1> Hello devops hhh</h1>");
 });
 

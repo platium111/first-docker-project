@@ -1,5 +1,9 @@
 version: "3"
 services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "3000:80"
   node-app:
     build:
       context: .
@@ -19,4 +23,3 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=hieptq
       - MONGO_INITDB_ROOT_PASSWORD=mypassword
-  

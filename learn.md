@@ -173,6 +173,11 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
 
   * session has config for expired time, so when time up, session is removed from Redis
 
+* Load balancing NGINX
+  * normal, we can create multiple containers, map multiple client ports to 2 container (example). EX : 3001:3000, 3000:3000 -> it's the issue, so many port mappings -> we need something automatically -> USing NGINX
+    * 3000 in client -> map to 80 (nginx) -> auto map with 2 containers in port 3000
+	* remember to config NGINX with `default_conf` and redirect proxy, path
+	* make config in docker-compose include dev and prod
 
 [REFERENCE]
 * bash 
