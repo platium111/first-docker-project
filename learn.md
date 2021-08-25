@@ -184,6 +184,29 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
     * after using scale, we have 3 containers -> using `docker logs ...` for 3 container, then make a request, we can see it's dipslayed one at a time
       [pr] Got error in not doing load balancing. It's because I lack `;` in some commands in `default.conf` file
 
+* CORS
+  * With 2 different domains, frontend cannot access backend -> need to config CORS
+  * WHen install new library -> need to run `--build` again and `-v` for recreating anonymous volume because we use it from `node_modules`
+
+* DigitalOcean
+  * Create droplet
+  * got to powershell `ssh root@[ip_address]` -> put password in
+  * Install Docker in Ubuntu
+    * go to `get.docker.com` -> curl -fsSL https://get.docker.com -o get-docker.sh
+    * `ls` to see the file there, actually the link above has all script automatically run
+    * wait -> verify `docker --version`
+    * Need to install `docker-compose` -> go to the homepage -> Linux, see the command
+      * Use 2 commands from docker-compose homepage
+  * Change the environment variable in .yml production file to use ${ENV VARIABLE}
+  * using `export SESSION_SECRET="hello"` in SSH -> but very slow -> create the file is better
+    * using `printenv` to check environment there
+    * `vi .env` to create file -> fill up all env from .yml
+    * write few script inside `.profile` to get all env above
+    * Exit all ssh to see env again in printenv
+    
+
+
+
 [REFERENCE]
 * bash 
   https://tldp.org/LDP/Bash-Beginners-Guide/html/index.html
@@ -191,3 +214,9 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
 [COMMAND]
 * kill port 
   * `npx kill-port 4000`
+* current folder in Linux -> `pwd`
+* create new file `vi .env` -> create .env file
+  * `Shift + right click` to paste text into vi
+  * `ECS` to finish editing -> `:wq` to save and quit, `:qa` to exit
+  * `ls -la` to print all files
+

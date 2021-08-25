@@ -11,6 +11,7 @@ const {
 } = require("./config/config");
 const postRouter = require("./routes/postRoute");
 const userRouter = require("./routes/userRoute");
+const cors = require("cors");
 
 // session with redis
 const redis = require("redis");
@@ -44,6 +45,7 @@ const connectWithRetry = () => {
 
 connectWithRetry();
 app.enable("trust proxy"); // trust proxy from nginx
+app.use(cors({}));
 
 app.use(
   session({
