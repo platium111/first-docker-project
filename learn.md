@@ -178,7 +178,16 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
     * 3000 in client -> map to 80 (nginx) -> auto map with 2 containers in port 3000
 	* remember to config NGINX with `default_conf` and redirect proxy, path
 	* make config in docker-compose include dev and prod
+  * `--scale node=app=3` -> need to change the port from 3000 to 4000 in Dockerfile in mapping from outside. Otherwise get error in using port 3000
+
+  * [how to test load balancing]
+    * after using scale, we have 3 containers -> using `docker logs ...` for 3 container, then make a request, we can see it's dipslayed one at a time
+      [pr] Got error in not doing load balancing. It's because I lack `;` in some commands in `default.conf` file
 
 [REFERENCE]
 * bash 
   https://tldp.org/LDP/Bash-Beginners-Guide/html/index.html
+
+[COMMAND]
+* kill port 
+  * `npx kill-port 4000`
