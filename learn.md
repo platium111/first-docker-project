@@ -203,6 +203,12 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
     * `vi .env` to create file -> fill up all env from .yml
     * write few script inside `.profile` to get all env above
     * Exit all ssh to see env again in printenv
+  * create `mkdir app` -> `cd app` -> `git clone [url] .`
+  * run `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+  * using IP from DigitalOcean to test
+  * WHEN CODE CHANGE
+    * [pr] need to push and pull in D.O -> docker-compose ... down -> docker-compose... up. BUT it's not updating the code because this is PROD env, we don't sync our code
+      -> [sol] using `--build` to force rebuild image
     
 
 
