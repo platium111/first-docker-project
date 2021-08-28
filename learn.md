@@ -209,7 +209,19 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
   * WHEN CODE CHANGE
     * [pr] need to push and pull in D.O -> docker-compose ... down -> docker-compose... up. BUT it's not updating the code because this is PROD env, we don't sync our code
       -> [sol] using `--build` to force rebuild image
-    
+      -> NOTE here, we don't change Redis, Mongo, so just rebuild specific service which is `node-app` -> command `--build node-app --no-deps`. It will reduce error prones if we have typo in Mongo or Redis.
+        * `--no-deps` here is used because node-app depends on Mongo in /.yml file, so it's will not check Mongo if we use this command
+        -> `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build node-app --no-deps`
+  * If want to recreate container by some reason, just use `--force-recreate node-app`
+  * [pr] we have problems with git push, git pull and using docker-compose with build images, because it consumes memory, processing... -> NEVER BUILD IN PROD, JUST HANDLE PRODUCTION TRAFFIC
+    ->[sol] Build image on dev server -> push to DockerHub (Amazon repo) -> in prod server just pull image and run `docker-compose ... up`
+  * DOCKER HUB
+    * create a repo name `node-app`
+    * using `docker image ls` to see the name of image we need to push
+    * `docker login`
+    * [pr] to push in dockerhub, we need unique repo such as `hieptqsocial/node-app` (has username)
+      * [sol] `docker image tag first-docker-project_node-app hieptqsocial/node-app`
+    * `docker push hieptqsocial/node-app`
 
 
 
