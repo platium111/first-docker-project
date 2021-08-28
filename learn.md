@@ -248,8 +248,19 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
       2) default is inable, check ip network first `ip add` -> can see eth0 with public IP
       3) create docker swarm `docker swarm init --advertise-addr 174.138.25.214` -> it will create `Manager Node`
         * we can add Workder node to Manager Node using commands when run command above
-      4) 
-
+      4) using `deploy` in node-app inside docker-compose.prod.yml with `replicas, restart_policy, update_config`
+      5) git push in local (never mind, not a good way now but better in step 7)
+      6) in SSH, git pull, `docker ...down` -> then using `docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml myapp` 
+        * we can see node in dockerswarm `docker node ls`
+        * we can see stack `docker stack ls` -> display `myapp` there
+        * can see services `docker stack services myapp` -> include mongo, redis, node-app, nginx
+        * we can use `docker ps` to see 8 containers of node-app
+        * can see all tasks in the stack `docker stack ps myapp`
+      7) NOW CHANGE CODE AGAIN, WE DON"T NEED TO GIT PULL AGAIN
+        * change some code -> `docker-compose -f docker-compose.yml -f docker-compose.prod.yml build node-app`
+        * then ` docker-compose -f docker-compose.yml -f docker-compose.prod.yml push node-app`
+        * in SSH, `docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml myapp`
+        * using `docker stack ps myapp` will see 2 containers shutdown, then gradually done
 
 
 [REFERENCE]
