@@ -8,6 +8,15 @@ services:
       context: .
       args:
         NODE_ENV: production
+    # for Dockerswarm
+    deploy:
+      replicas: 8
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 2 #number of container update at a time
+        delay: 15s
+
     environment:
       - NODE_ENV=production
       - MONGO_USER=${MONGO_USER}

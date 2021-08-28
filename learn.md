@@ -222,6 +222,33 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
     * [pr] to push in dockerhub, we need unique repo such as `hieptqsocial/node-app` (has username)
       * [sol] `docker image tag first-docker-project_node-app hieptqsocial/node-app`
     * `docker push hieptqsocial/node-app`
+    * change in docker-compose.yml which has node-app with  image: hieptqsocial/node-app
+      * Just checking if PROD can build it from dockerhub, this is just a testing purpose
+        * git push -> in SSH, using git pull -> build again will see `Sending build context to Docker daemon  341.5kB` mean that it's pulling image from dockerhub
+          * also check it `Successfully tagged hieptqsocial/node-app:latest`
+    * We need to build prod env in our local
+      1) using `docker-compose -f docker-compose.yml -f docker-compose.prod.yml build` to build image -> we can see update in hieptqsocial/node-app
+        * if we just need `node-app`, just pass it in
+      2) push `docker-compose -f docker-compose.yml -f docker-compose.prod.yml push`
+        * the same can put `node-app` there
+    * PULL from ssh
+      * `docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull`
+    * RUN
+      * `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+      * we can use `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps node-app`
+  * [improvement] Current flow we need to do manually build prod in local and push image to dockerhub -> in dockerpub we need to `docker pull` and `up` -> we can use docker watchpower to automatically identify changes in image then auto pull and up in SSH
+    1) in SSH, `docker run -d --name watchtower -e WATCHTOWER_TRACE=true -e WATCHTOWER_DEBUG=true -e WATCHTOWER_POLL_INTERVAL=50 -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower app_node-app_1` 
+      * can use `docker logs watchtower -f` to see log (check the name in `docker ps`)
+      * if wrong in watchtower, can use `docker rm watchtower -f` to remove the container
+  * [improvement] ROLLING UPDATE: currenly we need to tear down the container and using new container for every changes we have, it will be the reduction in the traffic -> rolling update with Container Orchestration with Kubernetes/Dockerswarm can solve it
+    * docker-compose is very simple tool just to run, build... containers -> Dockerswarm can manage multiple containers which can create multiple containers (distributed services). rolling update
+    * It has multiple `Manager Node` and `Worker Node` which can use many services to deploy apps. Manager node pushes tasks to Worker Node
+    * STEPS
+      1) can use `docker info` to check if it has Dockerswarm enable 
+      2) default is inable, check ip network first `ip add` -> can see eth0 with public IP
+      3) create docker swarm `docker swarm init --advertise-addr 174.138.25.214` -> it will create `Manager Node`
+        * we can add Workder node to Manager Node using commands when run command above
+      4) 
 
 
 
