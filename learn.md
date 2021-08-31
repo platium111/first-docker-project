@@ -256,12 +256,12 @@ using intereactive logs `docker logs first-docker-project_node-app_1 -f` with -f
         * can see services `docker stack services myapp` -> include mongo, redis, node-app, nginx
         * we can use `docker ps` to see 8 containers of node-app
         * can see all tasks in the stack `docker stack ps myapp`
-      7) NOW CHANGE CODE AGAIN, WE DON"T NEED TO GIT PULL AGAIN
+      7) NOW CHANGE CODE AGAIN, WE DON"T NEED TO GIT PULL AGAIN (only if not change something in Docker-compose files)
         * change some code -> `docker-compose -f docker-compose.yml -f docker-compose.prod.yml build node-app`
         * then ` docker-compose -f docker-compose.yml -f docker-compose.prod.yml push node-app`
         * in SSH, `docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml myapp`
         * using `docker stack ps myapp` will see 2 containers shutdown, then gradually done
-
+        * IF we don't want 8 replicas, using 2 for example. We need to push it git, in ssh need to pull and deploy again
 
 [REFERENCE]
 * bash 
