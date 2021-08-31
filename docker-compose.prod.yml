@@ -10,7 +10,7 @@ services:
         NODE_ENV: production
     # for Dockerswarm
     deploy:
-      replicas: 8
+      replicas: 2
       restart_policy:
         condition: any
       update_config:
